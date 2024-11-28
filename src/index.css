@@ -1,13 +1,341 @@
+/* Resetting margin and font settings */
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(135deg, #6dd5ed, #0a6279);
+  color: #333;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  height: 100vh;
+  overflow: hidden;
+  animation: smoothBackgroundChange 10s infinite alternate;
+  background-size: 400% 400%;
+  background-image: linear-gradient(135deg, #6dd5ed, #2193b0, #ff9a9e, #fad0c4, #a18cd1, #fbc2eb);
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* Header layout */
+#my_app {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* Ensure footer is at the bottom */
+  align-items: center;
+  min-height: 100vh;
+  /* Make the app container fill the viewport */
+  /* padding: 20px; */
+  box-sizing: border-box;
+}
+
+/* Main container layout (wraps content) */
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 100px;
+  padding: 20px;
+  animation: fadeIn 1s ease-in-out;
+  flex-grow: 1;
+  /* This ensures the container takes up the available space */
+  min-height: 0;
+  /* Prevents content from overflowing */
+}
+
+/* Box layout */
+#box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Ensure the container for the input and button is well defined */
+.input-container {
+  position: fixed;
+  top: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  width: 30%;
+  /* Ensure a minimum height for the input container to avoid shifting */
+  min-height: 60px;
+  /* You can adjust this based on your design */
+}
+
+/* Ensure the input box maintains the same height regardless of the error or loading state */
+input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 100%;
+  box-sizing: border-box;
+  outline: none;
+}
+
+button {
+  padding: 10px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+/* Error message styling */
+.error-message {
+  position: fixed;
+  top: 25%;
+  color: red;
+  font-size: 14px;
+  min-height: 20px;
+  max-width: 30%;
+  /* Ensures that space for error message is reserved */
+}
+
+/* Current weather container styling */
+#current_weather {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  width: 300px;
+  /* font-family: Arial, sans-serif; */
+  animation: slideIn 0.7s ease;
+  position: relative;
+  font-weight: bold;
+}
+
+/* Hover effect for current weather */
+#current_weather:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.9);
+  /* Adjust this color as needed */
+}
+
+#current_weather:hover:before {
+  opacity: 1;
+}
+
+/* Adding a glowing border animation similar to weather-item */
+#current_weather:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 8px;
+  background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+  /* Adjust the gradient if necessary */
+  z-index: -1;
+  filter: blur(8px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+
+#current_weather h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  color: #333;
+  text-align: center;
+}
+
+/* Forecast list container */
+.weather-forecast-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.weather-forecast-container h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  color: #333;
+  text-align: center;
+}
+
+#ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Individual forecast item layout */
+.weather-forecast-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 10px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.weather-forecast-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+/* Adding a glowing border animation */
+.weather-forecast-item:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 8px;
+  background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+  z-index: -1;
+  filter: blur(8px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.weather-forecast-item:hover:before {
+  opacity: 1;
+}
+
+/* Time styling */
+.weather-forecast-item .time {
+  font-weight: bold;
+  font-size: 16px;
+  color: #333;
+}
+
+/* Weather description styling */
+.weather-forecast-item .description {
+  font-size: 14px;
+  color: #555;
+}
+
+/* Temperature styling */
+.weather-forecast-item .temperature {
+  font-size: 16px;
+  font-weight: normal;
+  color: #007bff;
+}
+
+/* Footer styling */
+footer {
+  background-color:#333;
+  color: #fff;
+  text-align: center;
+  padding: 15px;
+  font-size: 14px;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+span {
+  margin-left: 10px;
+}
+
+footer a {
+  color: #fff;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes smoothBackgroundChange {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 600px) {
+  #my_app {
+    padding: 15px;
+  }
+
+  input {
+    width: 100%;
+    /* Full width on small screens */
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  button {
+    width: 100%;
+    /* Full width button on small screens */
+  }
+
+  .container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .weather-forecast-item {
+    max-width: 100%;
+  }
 }
